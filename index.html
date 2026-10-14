@@ -88,7 +88,7 @@
   .strain-card.damaged { border-left: 4px solid var(--status-red); }
   
   .bud-art-container { display: flex; gap: 10px; align-items: center; background: #1a1a1a; border: 1px solid var(--panel-border); padding: 6px; border-radius: 3px; }
-  .bud-pixel-canvas { width: 72px; height: 72px; image-rendering: pixelated; border-radius: 2px; background: #000; flex-shrink: 0; box-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
+  .bud-pixel-canvas { width: 84px; height: 84px; image-rendering: auto; border-radius: 2px; background: #000; flex-shrink: 0; box-shadow: 2px 2px 6px rgba(0,0,0,0.85); cursor: zoom-in; }
 
   .spec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; background: #1a1a1a; padding: 6px; border-radius: 3px; font-size: 9px; font-family: monospace; border: 1px solid var(--panel-border); }
   .spec-grid span { color: var(--silver-dim); }
@@ -113,6 +113,11 @@
   .check-item { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 8px 10px; border: 1px solid var(--panel-border); border-radius: 3px; font-size: 10px; }
   .check-item.done { border-color: var(--wood-light); background: rgba(210, 166, 121, 0.08); }
 
+  #lightbox-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 2000; flex-direction: column; justify-content: center; align-items: center; padding: 16px; cursor: zoom-out; }
+  #lightbox-modal.open { display: flex; }
+  #lightbox-img { width: min(88vmin, 760px); height: min(88vmin, 760px); image-rendering: auto; border-radius: 4px; box-shadow: 0 15px 50px rgba(0,0,0,0.95); }
+  #lightbox-caption { margin-top: 12px; font-size: 14px; font-weight: 900; color: var(--wood-light); letter-spacing: 1px; text-align: center; }
+
   #toast-rack { position: fixed; bottom: 16px; left: 10px; right: 10px; display: flex; flex-direction: column; gap: 6px; z-index: 1000; pointer-events: none; }
   .toast { background: #111; border: 1px solid var(--silver-dark); border-left: 3px solid var(--wood-light); color: #fff; padding: 8px 12px; font-size: 11px; font-weight: bold; font-family: monospace; border-radius: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.9); animation: slideUp 0.2s, fadeOut 0.4s 2.6s forwards; pointer-events: auto;}
   
@@ -124,7 +129,7 @@
 
 <header>
   <div class="header-top">
-    <div class="brand-title">THE JOY OF COLLECTING <span>// V1.0</span></div>
+    <div class="brand-title">THE JOY OF COLLECTING <span>// MASTER STUDIO EDITION</span></div>
     <div style="display:flex; gap:4px;">
       <button class="btn" style="padding:3px 6px; font-size:8px;" onclick="saveGame()">SAVE</button>
       <button class="btn" style="padding:3px 6px; font-size:8px;" onclick="loadGame()">LOAD</button>
@@ -161,19 +166,19 @@
 
 <main>
 
-  <!-- TAB 1: REVOLVING CORNER MARKET -->
+  <!-- TAB 1: THRIFT SHOPS (TEXT-ONLY LISTINGS - NO IMAGES) -->
   <div id="tab-market" class="view-tab active">
     <div class="panel">
       <div class="panel-header">
-        <span>Thrift Shop Finds</span>
+        <span>Thrift Shop Finds (Unrestored Canvases)</span>
         <span style="font-size:10px; color:var(--silver-dim);">RESTOCK: <span id="market-timer" style="font-size:12px; font-weight:bold; color:var(--status-green);">10.0</span>s</span>
       </div>
-      <p style="font-size:10px; color:var(--silver-dim);">5 random landscape paintings surface every 10 seconds. Snatch them up before other collectors.</p>
+      <p style="font-size:10px; color:var(--silver-dim);">5 mystery landscape canvases surface every 10 seconds. Purchase a canvas to unveil its oil painting inside The Studio.</p>
       <div id="market-grid" class="fleet-grid"></div>
     </div>
   </div>
 
-  <!-- TAB 2: SEED BANK (GROW OPS) -->
+  <!-- TAB 2: STORAGE UNITS (GACHA & DEALER HIRING) -->
   <div id="tab-gacha" class="view-tab">
     <div class="panel">
       <div class="panel-header">Storage Unit Auctions (Blind Buys)</div>
@@ -265,7 +270,7 @@
     </div>
   </div>
 
-  <!-- TAB 3: INVENTORY (STASH) -->
+  <!-- TAB 3: THE STUDIO -->
   <div id="tab-fleet" class="view-tab">
     <div class="panel">
       <div class="panel-header">
@@ -319,16 +324,16 @@
     </div>
   </div>
   
-  <!-- TAB: GALLERY -->
+  <!-- TAB 9: THE EXHIBIT (GALLERY) -->
   <div id="tab-gallery" class="view-tab">
     <div class="panel">
       <div class="panel-header"><span>The Grand Exhibition 🖼️</span></div>
-      <p style="font-size:10px; color:var(--silver-dim);">Lock your rarest Bob Ross masterworks to preserve them forever.</p>
+      <p style="font-size:10px; color:var(--silver-dim);">Lock your rarest Bob Ross masterworks to preserve them forever. Click any painting to inspect full-screen.</p>
       <div id="gallery-grid" class="fleet-grid"></div>
     </div>
   </div>
 
-  <!-- TAB 4: COURIERS -->
+  <!-- TAB 4: ART DEALERS -->
   <div id="tab-pilots" class="view-tab">
     <div class="panel">
       <div class="panel-header"><span>Dealer Network</span></div>
@@ -361,7 +366,7 @@
     </div>
   </div>
 
-  <!-- TAB 5: DELIVERY ZONES -->
+  <!-- TAB 5: GALLERIES & MUSEUMS -->
   <div id="tab-routes" class="view-tab">
     <div class="panel">
       <div class="panel-header">
@@ -380,7 +385,7 @@
     </div>
   </div>
 
-  <!-- TAB 6: WHOLESALE AUCTIONS -->
+  <!-- TAB 6: SOTHEBY'S AUCTIONS -->
   <div id="tab-auction" class="view-tab">
     <div class="panel">
       <div class="panel-header"><span>Sotheby's Auction Block</span><span style="color:var(--status-amber);"><span id="auction-count">0</span>/10 LANES</span></div>
@@ -396,7 +401,7 @@
     </div>
   </div>
 
-  <!-- TAB 7: BURNER PHONE -->
+  <!-- TAB 7: COMMISSIONS & AUTOMATIONS -->
   <div id="tab-checklist" class="view-tab">
     <div class="panel">
       <div class="panel-header">Studio Automations</div>
@@ -431,7 +436,7 @@
     </div>
   </div>
 
-  <!-- TAB 8: MARKETING UPGRADES -->
+  <!-- TAB 8: MANAGEMENT UPGRADES -->
   <div id="tab-upgrades" class="view-tab">
     <div class="panel">
       <div class="panel-header">Management Strategy</div>
@@ -454,6 +459,12 @@
     </div>
   </div>
 </main>
+
+<!-- FULL-SCREEN ZOOM MODAL -->
+<div id="lightbox-modal" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="Masterwork Preview">
+  <div id="lightbox-caption"></div>
+</div>
 
 <div id="toast-rack"></div>
 
@@ -511,10 +522,11 @@
 
   const $ = id => document.getElementById(id);
 
-  /* ================= 64x64 PROCEDURAL BOB ROSS PIXEL ART ================= */
+  /* ================= 512x512 FULL-CANVAS PER-PIXEL SHADER & MICRO-BRISTLE ENGINE ================= */
   const offscreenCanvas = document.createElement('canvas');
-  offscreenCanvas.width = 64; offscreenCanvas.height = 64;
+  offscreenCanvas.width = 512; offscreenCanvas.height = 512;
   const offscreenCtx = offscreenCanvas.getContext('2d');
+  const imageCache = new Map();
 
   function Mulberry32(a) {
     return function() {
@@ -525,154 +537,866 @@
     }
   }
 
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function clamp(v, min, max) { return v < min ? min : (v > max ? max : v); }
+  function lerpCol(c1, c2, t) {
+    t = clamp(t, 0, 1);
+    return [
+      (c1[0] + (c2[0] - c1[0]) * t) | 0,
+      (c1[1] + (c2[1] - c1[1]) * t) | 0,
+      (c1[2] + (c2[2] - c1[2]) * t) | 0
+    ];
+  }
+  function rgb(c) { return `rgb(${c[0]},${c[1]},${c[2]})`; }
+  function rgba(c, a) { return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
+
+  const NOISE_LUT = new Float32Array(4096);
+  function initNoiseTable(seed) {
+    const r = Mulberry32(seed);
+    for (let i = 0; i < 4096; i++) NOISE_LUT[i] = r() * 2.0 - 1.0;
+  }
+
+  function noiseDeriv(x, y) {
+    const ix = Math.floor(x), iy = Math.floor(y);
+    const fx = x - ix, fy = y - iy;
+    const ux = fx * fx * fx * (fx * (fx * 6.0 - 15.0) + 10.0);
+    const uy = fy * fy * fy * (fy * (fy * 6.0 - 15.0) + 10.0);
+    const dux = 30.0 * fx * fx * (fx * (fx - 2.0) + 1.0);
+    const duy = 30.0 * fy * fy * (fy * (fy - 2.0) + 1.0);
+
+    const p00 = ((ix & 63) + ((iy & 63) << 6)) & 4095;
+    const p10 = (((ix + 1) & 63) + ((iy & 63) << 6)) & 4095;
+    const p01 = ((ix & 63) + (((iy + 1) & 63) << 6)) & 4095;
+    const p11 = (((ix + 1) & 63) + (((iy + 1) & 63) << 6)) & 4095;
+
+    const a = NOISE_LUT[p00], b = NOISE_LUT[p10], c = NOISE_LUT[p01], d = NOISE_LUT[p11];
+    const k0 = a, k1 = b - a, k2 = c - a, k3 = a - b - c + d;
+
+    return {
+      v: k0 + k1 * ux + k2 * uy + k3 * ux * uy,
+      dx: (k1 + k3 * uy) * dux,
+      dy: (k2 + k3 * ux) * duy
+    };
+  }
+
+  function fbm2D(x, y, octaves) {
+    let sum = 0.0, amp = 0.5, px = x, py = y;
+    for (let i = 0; i < octaves; i++) {
+      sum += noiseDeriv(px, py).v * amp;
+      const nx = (0.8 * px - 0.6 * py) * 2.03 + 7.1;
+      const ny = (0.6 * px + 0.8 * py) * 2.03 + 19.3;
+      px = nx; py = ny;
+      amp *= 0.5;
+    }
+    return sum;
+  }
+
+  function erodedMountainFBM(x, y, octaves) {
+    let sum = 0.0, amp = 0.52, dx = 0.0, dy = 0.0, px = x, py = y;
+    for (let i = 0; i < octaves; i++) {
+      const n = noiseDeriv(px, py);
+      dx += n.dx; dy += n.dy;
+      const ridge = 1.0 - Math.abs(n.v);
+      const sharp = ridge * ridge;
+      const erosion = 1.0 / (1.0 + 0.30 * (dx * dx + dy * dy));
+      sum += amp * sharp * erosion;
+      const nx = (0.8 * px - 0.6 * py) * 2.05 + 13.7;
+      const ny = (0.6 * px + 0.8 * py) * 2.05 + 29.3;
+      px = nx; py = ny;
+      amp *= 0.50;
+    }
+    return sum;
+  }
+
+  function ensurePaintingImage(item) {
+    if (!item) return "";
+    const style = item.role || "MOUNTAINSCAPE";
+    const tIdx = (item.tierIndex !== undefined) ? item.tierIndex : (item.tierIdx || 0);
+    const cacheKey = `${item.seedInt}_${style}_${tIdx}`;
+    if (item.imgData && item.imgData.length > 100) return item.imgData;
+    if (imageCache.has(cacheKey)) {
+      item.imgData = imageCache.get(cacheKey);
+      return item.imgData;
+    }
+    item.imgData = generatePaintingImage(item.seedInt, style, tIdx);
+    imageCache.set(cacheKey, item.imgData);
+    return item.imgData;
+  }
+
+  const Z_GRID = 140;
+  const H_GRID = new Float32Array(512 * Z_GRID);
+
   function generatePaintingImage(seedInt, style, tierIdx) {
-    offscreenCtx.clearRect(0, 0, 64, 64);
+    const W = 512, H = 512;
+    const ctx = offscreenCtx;
+    initNoiseTable(seedInt);
     const rng = Mulberry32(seedInt);
-    
-    // 1. Frame (Dark Wood)
-    offscreenCtx.fillStyle = '#3a2311';
-    offscreenCtx.fillRect(0, 0, 64, 64);
-    offscreenCtx.fillStyle = '#5c3a21'; // inner light lip
-    offscreenCtx.fillRect(2, 2, 60, 60);
 
-    // Canvas boundary 3 to 60
-    offscreenCtx.save();
-    offscreenCtx.beginPath();
-    offscreenCtx.rect(3, 3, 58, 58);
-    offscreenCtx.clip();
+    // --- 1. PALETTE & VARIATION ---
+    let pal = {
+      skyTop: [104, 146, 186],
+      skyMid: [182, 206, 226],
+      skyWarm: [248, 232, 210],
+      rockDark: [24, 32, 42],
+      rockSlate: [56, 70, 86],
+      rockWarm: [134, 114, 94],
+      shadowBlue: [82, 106, 138],
+      snowPure: [250, 253, 255],
+      snowSun: [254, 240, 212],
+      mistCol: [218, 226, 234],
+      foothillFar: [58, 78, 66],
+      foothillMid: [42, 64, 44],
+      foothillNear: [28, 48, 26],
+      meadowLight: [142, 148, 66],
+      meadowMid: [86, 104, 44],
+      meadowDark: [32, 44, 18],
+      meadowGold: [178, 144, 54],
+      soilDark: [28, 18, 11],
+      soilMid: [76, 52, 32],
+      soilWarm: [124, 92, 58],
+      waterDeep: [26, 48, 62],
+      waterMid: [68, 104, 124],
+      waterSky: [192, 216, 230],
+      pineShadow: [10, 18, 12],
+      pineMid: [34, 54, 24],
+      pineSun: [154, 122, 38],
+      bushGold: [184, 142, 46]
+    };
 
-    // Palettes based on style
-    let skyCol = '#87CEEB', groundCol = '#2d4c1e', waterCol = '#0f4c81', mountCol = '#555', snowCol = '#fff';
-    if(style === 'WINTERSCAPE') { skyCol = '#a1aeb1'; groundCol = '#e0e6ed'; waterCol = '#465d6b'; mountCol = '#6b7a8f'; }
-    if(style === 'SEASCAPE') { skyCol = '#ff7b54'; groundCol = '#d2a679'; waterCol = '#1a5f7a'; }
-    if(style === 'CABINSCAPE') { skyCol = '#ffb347'; groundCol = '#3a5024'; }
-
-    // Sky
-    offscreenCtx.fillStyle = skyCol;
-    offscreenCtx.fillRect(3, 3, 58, 58);
-
-    // Sun / Moon
-    if(style === 'SEASCAPE' || style === 'CABINSCAPE') {
-        offscreenCtx.fillStyle = '#ffed4a';
-        offscreenCtx.beginPath();
-        offscreenCtx.arc(15 + rng()*34, 15 + rng()*10, 5 + rng()*3, 0, Math.PI*2);
-        offscreenCtx.fill();
+    if (style === 'WINTERSCAPE') {
+      pal.skyTop = [62, 84, 118];
+      pal.skyWarm = [232, 226, 230];
+      pal.foothillFar = [98, 116, 136];
+      pal.foothillMid = [78, 96, 116];
+      pal.foothillNear = [48, 64, 82];
+      pal.meadowLight = [224, 232, 242];
+      pal.meadowMid = [164, 178, 196];
+      pal.meadowDark = [78, 92, 110];
+      pal.meadowGold = [196, 206, 220];
+      pal.pineSun = [184, 204, 220];
+    } else if (style === 'SEASCAPE') {
+      pal.skyTop = [68, 56, 94];
+      pal.skyMid = [188, 112, 88];
+      pal.skyWarm = [254, 198, 128];
+      pal.snowSun = [255, 218, 176];
+    } else if (style === 'FORESTSCAPE') {
+      pal.pineSun = [174, 138, 38];
+      pal.meadowLight = [134, 154, 58];
     }
 
-    // Helper: Draw Polygon
-    function drawPoly(pts, fill) {
-        offscreenCtx.fillStyle = fill;
-        offscreenCtx.beginPath();
-        offscreenCtx.moveTo(pts[0][0], pts[0][1]);
-        for(let i=1; i<pts.length; i++) offscreenCtx.lineTo(pts[i][0], pts[i][1]);
-        offscreenCtx.fill();
+    const sunDir = rng() > 0.35 ? 1 : -1;
+    const peakShift = (rng() - 0.5) * 0.22;
+    const creekDir = rng() > 0.4 ? 1 : -1;
+    const hasCabin = (style === 'CABINSCAPE' || tierIdx >= 4 || rng() > 0.3) && style !== 'SEASCAPE';
+    const cabinSide = rng() > 0.25 ? 1 : -1;
+
+    // --- 2. PRE-COMPUTE 3D MOUNTAIN HEIGHTFIELD (512 x 140) ---
+    for (let iz = 0; iz < Z_GRID; iz++) {
+      const nz = (iz + 12) / (Z_GRID + 12);
+      const rowOff = iz * W;
+      for (let x = 0; x < W; x++) {
+        const nx = (x - 256.0) / 240.0;
+        const cx = nx - peakShift;
+
+        const zMain = Math.exp(-Math.pow((nz - 0.78) / 0.24, 2));
+        const mainCone = Math.max(0, 1.0 - Math.pow(Math.abs(cx) * 1.12, 1.25));
+        const leftShoulder = Math.exp(-Math.pow((cx + 0.42) / 0.22, 2)) * 0.52;
+        const rightShoulder = Math.exp(-Math.pow((cx - 0.46) / 0.20, 2)) * 0.48;
+        const farLeftPeak = Math.exp(-Math.pow((cx + 0.76) / 0.18, 2)) * 0.34;
+
+        const zSub = Math.exp(-Math.pow((nz - 0.52) / 0.16, 2));
+        const subPeak = zSub * Math.exp(-Math.pow((cx - 0.16 * sunDir) / 0.24, 2)) * 0.62;
+
+        const chuteCenter = -0.06 * sunDir + Math.sin(nz * 7.5) * 0.08;
+        const glacialCarve = Math.exp(-Math.pow((cx - chuteCenter) / 0.14, 2)) * Math.exp(-Math.pow((nz - 0.55) / 0.28, 2)) * 0.24;
+
+        const zCanyon = Math.exp(-Math.pow((nz - 0.34) / 0.22, 2));
+        const canyonWall = zCanyon * Math.pow(clamp((Math.abs(nx) - 0.18) / 0.82, 0, 1), 1.55) * 0.68;
+
+        const warpX = noiseDeriv(nx * 2.4 + 3.1, nz * 2.4 + 7.2).v * 0.18;
+        const warpZ = noiseDeriv(nx * 2.4 + 9.4, nz * 2.4 + 1.8).v * 0.18;
+        const ridgeDetail = erodedMountainFBM(nx * 2.8 + warpX, nz * 3.6 + warpZ, 6);
+
+        const macro = Math.max(0, zMain * (mainCone + leftShoulder + rightShoulder + farLeftPeak) + subPeak - glacialCarve + canyonWall);
+        H_GRID[rowOff + x] = macro * (0.38 + 0.78 * ridgeDetail) * 222.0;
+      }
     }
 
-    // Mountains
-    if(style === 'MOUNTAINSCAPE' || style === 'WINTERSCAPE' || style === 'WATERSCAPE' || style === 'FORESTSCAPE') {
-        let numPeaks = 2 + Math.floor(rng()*3);
-        for(let i=0; i<numPeaks; i++) {
-            let px = 10 + i*15 + (rng()-0.5)*10;
-            let py = 15 + rng()*15;
-            let pw = 15 + rng()*10;
-            
-            // Base Mountain
-            drawPoly([[px, py], [px-pw, 45], [px+pw, 45]], mountCol);
-            // Snowcap (Titanium White)
-            let sw = pw * 0.4;
-            let sy = py + (45-py)*0.4;
-            drawPoly([[px, py], [px-sw, sy], [px+sw, sy]], snowCol);
-            
-            // Shadow side
-            offscreenCtx.fillStyle = 'rgba(0,0,0,0.2)';
-            offscreenCtx.beginPath();
-            offscreenCtx.moveTo(px, py);
-            offscreenCtx.lineTo(px, 45);
-            offscreenCtx.lineTo(px+pw, 45);
-            offscreenCtx.fill();
+    // --- 3. PER-PIXEL BUFFER: SKY, FLOATING-HORIZON MOUNTAINS, FOOTHILLS, MEADOW, Boulders & CREEK ---
+    const imgData = ctx.createImageData(W, H);
+    const data = imgData.data;
+
+    // Pass 3A: Sky & Clouds (y = 0..310)
+    for (let y = 0; y < 310; y++) {
+      const ny = y / 295;
+      const baseSky = ny < 0.55
+        ? lerpCol(pal.skyTop, pal.skyMid, ny / 0.55)
+        : lerpCol(pal.skyMid, pal.skyWarm, (ny - 0.55) / 0.45);
+
+      for (let x = 0; x < W; x++) {
+        const nx = (x - 256) / 256;
+        const cNoise = erodedMountainFBM(nx * 2.2 + 4.1, ny * 3.8 + 1.7, 4);
+        const cloudMask = clamp((cNoise - 0.48) * 2.4 * (1.0 - ny * 0.65), 0, 0.78);
+        const cCol = lerpCol(pal.skyWarm, [255, 255, 255], clamp(0.4 + nx * sunDir * 0.5, 0, 1));
+        const idx = (y * W + x) << 2;
+        data[idx]     = (baseSky[0] + (cCol[0] - baseSky[0]) * cloudMask) | 0;
+        data[idx + 1] = (baseSky[1] + (cCol[1] - baseSky[1]) * cloudMask) | 0;
+        data[idx + 2] = (baseSky[2] + (cCol[2] - baseSky[2]) * cloudMask) | 0;
+        data[idx + 3] = 255;
+      }
+    }
+
+    // Pass 3B: Front-to-Back Floating Horizon Mountain Raycaster (Eliminates vertical bar artifacts!)
+    const minY = new Float32Array(W);
+    for (let x = 0; x < W; x++) minY[x] = 296.0;
+
+    for (let iz = 1; iz < Z_GRID - 1; iz++) {
+      const nz = (iz + 12) / (Z_GRID + 12);
+      const baseScreenY = 294.0 - (1.0 - nz) * 22.0;
+      const rowOff = iz * W;
+
+      for (let x = 1; x < W - 1; x++) {
+        const h = H_GRID[rowOff + x];
+        if (h < 2.0) continue;
+        const screenY = baseScreenY - h;
+
+        // Only draw if this ridge projects higher on screen than all closer ridges!
+        if (screenY < minY[x]) {
+          const nx = (x - 256.0) / 240.0;
+          const hR = H_GRID[rowOff + x + 1];
+          const hL = H_GRID[rowOff + x - 1];
+          const hF = H_GRID[(iz - 1) * W + x];
+          const micro = noiseDeriv(nx * 38.0, nz * 38.0);
+          const slopeX = (hR - hL) * 0.65 + micro.dx * 0.14;
+          const slopeZ = (h - hF) * 0.55 + micro.dy * 0.14;
+          const steepness = Math.hypot(slopeX, slopeZ);
+
+          let inCastShadow = false;
+          for (let s = 1; s <= 6; s++) {
+            const sx = x + sunDir * s * 6;
+            if (sx >= 0 && sx < W && H_GRID[rowOff + sx] > h + s * 4.2) {
+              inCastShadow = true;
+              break;
+            }
+          }
+
+          const strata = noiseDeriv(nx * 18.0 + h * 0.04, nz * 26.0).v;
+          const sunDot = inCastShadow ? -0.45 : (-slopeX * sunDir * 0.85 + slopeZ * 0.32);
+
+          let r, g, b;
+          const isFlankCanyon = (nz < 0.48 && Math.abs(nx) > 0.32 && h < 145);
+          const isDarkSubPeak = (nz < 0.60 && nz > 0.40 && Math.abs(nx - 0.16 * sunDir) < 0.25);
+
+          if (isFlankCanyon) {
+            if (sunDot > 0.25) {
+              const c = lerpCol(pal.rockSlate, pal.rockWarm, clamp((sunDot - 0.25) * 1.4, 0, 0.75));
+              r = c[0]; g = c[1]; b = c[2];
+            } else if (sunDot > -0.15) {
+              const c = lerpCol(pal.rockDark, pal.rockSlate, 0.55 + strata * 0.25);
+              r = c[0]; g = c[1]; b = c[2];
+            } else {
+              r = pal.rockDark[0]; g = pal.rockDark[1]; b = pal.rockDark[2];
+            }
+          } else {
+            const snowLine = 1.68 - (h / 210.0) * 0.55 + strata * 0.35 - (isDarkSubPeak ? 0.42 : 0);
+            if (steepness < snowLine && h > 28) {
+              if (sunDot > 0.08) {
+                const c = lerpCol(pal.snowSun, pal.snowPure, clamp(sunDot * 0.9, 0, 1));
+                r = c[0]; g = c[1]; b = c[2];
+              } else {
+                const c = lerpCol(pal.snowPure, pal.shadowBlue, clamp(-sunDot * 1.2, 0.18, 0.92));
+                r = c[0]; g = c[1]; b = c[2];
+              }
+            } else {
+              if (sunDot > 0.15) {
+                const c = lerpCol(pal.rockSlate, pal.rockWarm, clamp(sunDot * 1.1, 0, 0.85));
+                r = c[0]; g = c[1]; b = c[2];
+              } else if (strata > 0.40 && h > 45) {
+                const c = lerpCol(pal.rockSlate, pal.shadowBlue, 0.65);
+                r = c[0]; g = c[1]; b = c[2];
+              } else {
+                const c = lerpCol(pal.rockDark, pal.rockSlate, clamp(0.45 + sunDot + strata * 0.2, 0, 0.85));
+                r = c[0]; g = c[1]; b = c[2];
+              }
+            }
+          }
+
+          const valleyFog = clamp(1.0 - (h / 78.0), 0, 1);
+          const fogNoise = 0.72 + 0.28 * noiseDeriv(nx * 6.0, nz * 8.0).v;
+          const mistAmt = clamp(Math.pow(valleyFog, 1.6) * 0.84 * fogNoise + (nz > 0.85 ? (nz - 0.85) * 1.8 : 0), 0, 0.90);
+
+          r = (r + (pal.mistCol[0] - r) * mistAmt) | 0;
+          g = (g + (pal.mistCol[1] - g) * mistAmt) | 0;
+          b = (b + (pal.mistCol[2] - b) * mistAmt) | 0;
+
+          const yTop = Math.max(0, Math.floor(screenY));
+          const yBot = Math.min(309, Math.ceil(minY[x]));
+
+          for (let py = yTop; py <= yBot; py++) {
+            const idx = (py * W + x) << 2;
+            data[idx] = r; data[idx + 1] = g; data[idx + 2] = b; data[idx + 3] = 255;
+          }
+          minY[x] = screenY;
         }
+      }
     }
 
-    // Ground / Midground
-    offscreenCtx.fillStyle = groundCol;
-    offscreenCtx.fillRect(3, 35 + rng()*10, 58, 30);
+    // Pass 3C: Per-Pixel Foothills, Bristle-Textured Meadow, Eroded Creek, 3D Boulders & Dual Waterfalls
+    const horizonY = 290;
 
-    // Water
-    if(style === 'WATERSCAPE' || style === 'SEASCAPE') {
-        offscreenCtx.fillStyle = waterCol;
-        let wy = style === 'SEASCAPE' ? 40 : 50;
-        offscreenCtx.fillRect(3, wy, 58, 61-wy);
-        
-        // Waterlines / reflections
-        offscreenCtx.fillStyle = 'rgba(255,255,255,0.4)';
-        for(let i=0; i<5; i++) {
-            offscreenCtx.fillRect(10 + rng()*30, wy + 2 + i*3, 5 + rng()*15, 1);
+    // Precompute 3D River Boulder Clusters (No smooth ellipses—each rock is a 3D multifractal heightfield!)
+    const boulders = [];
+    function getCreekCenter(y) {
+      const t = clamp((y - horizonY) / (H - horizonY), 0, 1);
+      const sCurve = Math.sin(t * Math.PI * 2.25 + 0.25) * (27 * creekDir * (1.0 - t * 0.25));
+      const cx = lerp(238, 276, Math.pow(t, 1.1)) + sCurve;
+      const halfW = 2.0 + Math.pow(t, 1.72) * 76;
+      return { cx, halfW, t };
+    }
+
+    [356, 418].forEach((wy, idx) => {
+      const { cx, halfW } = getCreekCenter(wy);
+      const sc = idx === 1 ? 1.35 : 0.88;
+      [-1.02, -0.74, -0.42, 0.40, 0.72, 1.02].forEach((pos, rIdx) => {
+        boulders.push({
+          x: cx + pos * halfW + (rng() - 0.5) * 6,
+          y: wy + (rng() - 0.5) * 5,
+          rx: (8.5 + (rIdx % 3) * 3.5) * sc,
+          ry: (5.0 + (rIdx % 2) * 2.5) * sc,
+          seed: idx * 31 + rIdx * 17
+        });
+      });
+    });
+    // Extra foreground river stones
+    boulders.push({ x: 308, y: 472, rx: 10, ry: 5.5, seed: 99 });
+    boulders.push({ x: 336, y: 478, rx: 14, ry: 7.0, seed: 107 });
+    boulders.push({ x: 204, y: 446, rx: 11, ry: 6.0, seed: 121 });
+
+    // Precompute Foothill Spire Envelopes across X
+    const fhTop0 = new Float32Array(W);
+    const fhTop1 = new Float32Array(W);
+    const fhTop2 = new Float32Array(W);
+    for (let x = 0; x < W; x++) {
+      const valleyBowl = Math.pow((x - 242) / 245, 2) * 52;
+      const w0 = fbm2D(x * 0.015, 1.1, 3) * 12;
+      const w1 = fbm2D(x * 0.018, 4.7, 3) * 10;
+      const w2 = fbm2D(x * 0.022, 8.3, 3) * 8;
+      // High-frequency conifer needle spire tops
+      const spire0 = Math.abs(noiseDeriv(x * 0.45, 2.1).v) * 9;
+      const spire1 = Math.abs(noiseDeriv(x * 0.38, 5.4).v) * 12;
+      const spire2 = (Math.abs(x - 242) < 48) ? 0 : Math.abs(noiseDeriv(x * 0.32, 9.8).v) * 14;
+
+      fhTop0[x] = 262 - valleyBowl + w0 - spire0;
+      fhTop1[x] = 275 - valleyBowl * 0.82 + w1 - spire1;
+      fhTop2[x] = 288 - valleyBowl * 0.60 + w2 - spire2;
+    }
+
+    for (let y = 205; y < H; y++) {
+      const { cx, halfW, t } = getCreekCenter(y);
+
+      for (let x = 0; x < W; x++) {
+        const idx = (y * W + x) << 2;
+
+        // 1. Check Foothill Conifer Layers (y between fhTop0[x] and horizonY)
+        if (y < horizonY + 8) {
+          let inFoothill = false;
+          let fCol = null;
+
+          if (y >= fhTop2[x] && Math.abs(x - 242) >= 44) {
+            const d = (y - fhTop2[x]) / 22.0;
+            const barkNoise = noiseDeriv(x * 0.5, y * 0.25).v;
+            fCol = lerpCol(pal.foothillNear, pal.pineShadow, clamp(0.35 + d * 0.5 - barkNoise * 0.25, 0, 1));
+            inFoothill = true;
+          } else if (y >= fhTop1[x]) {
+            const d = (y - fhTop1[x]) / 24.0;
+            const mist = clamp((d - 0.55) * 1.4, 0, 0.55);
+            fCol = lerpCol(pal.foothillMid, pal.mistCol, mist);
+            inFoothill = true;
+          } else if (y >= fhTop0[x]) {
+            const d = (y - fhTop0[x]) / 26.0;
+            const mist = clamp((d - 0.35) * 1.5, 0, 0.72);
+            fCol = lerpCol(pal.foothillFar, pal.mistCol, mist);
+            inFoothill = true;
+          }
+
+          if (inFoothill && y < horizonY) {
+            data[idx] = fCol[0]; data[idx + 1] = fCol[1]; data[idx + 2] = fCol[2]; data[idx + 3] = 255;
+            continue;
+          }
+          if (y < horizonY) continue;
         }
-    }
 
-    // Trees (Happy Little Trees)
-    let treeCount = (style === 'FORESTSCAPE') ? 15 + rng()*10 : 3 + rng()*5;
-    if(style === 'SEASCAPE') treeCount = 0;
-    
-    for(let i=0; i<treeCount; i++) {
-        let tx = 5 + rng()*50;
-        let ty = 35 + rng()*20;
-        let th = 10 + rng()*15;
-        let tw = 4 + rng()*4;
-        
-        // Trunk
-        offscreenCtx.fillStyle = '#3a2311';
-        offscreenCtx.fillRect(tx-1, ty-th, 2, th);
-        
-        // Leaves
-        let leafCol = (style === 'WINTERSCAPE') ? '#dcdcdc' : ((rng()>0.5)?'#2d4c1e':'#1f3614');
-        for(let j=0; j<3; j++) {
-            let ly = ty - th + j*(th/3);
-            let lw = tw * (j+1);
-            drawPoly([[tx, ly-tw], [tx-lw, ly+tw], [tx+lw, ly+tw]], leafCol);
+        // 2. Below horizonY: Evaluate Eroded Creek, 3D Boulders, Waterfall Foam, or Bristle Meadow!
+        const bankW = 5.0 + t * 28.0;
+        const bankWarp = fbm2D(x * 0.06, y * 0.06, 3) * (4.0 + t * 11.0);
+        const distFromCreek = (x - cx) + bankWarp;
+        const absDist = Math.abs(distFromCreek);
+
+        // Check if pixel is inside one of the 3D Fractured River Boulders
+        let hitBoulder = false;
+        let bR = 0, bG = 0, bB = 0;
+        if (y > 342) {
+          for (let b = 0; b < boulders.length; b++) {
+            const rk = boulders[b];
+            if (Math.abs(x - rk.x) > rk.rx * 1.35 || Math.abs(y - rk.y) > rk.ry * 1.35) continue;
+            const dx = (x - rk.x) / rk.rx;
+            const dy = (y - rk.y) / rk.ry;
+            // Perturb boulder radius with high-frequency ridged rock noise so it's angular & craggy!
+            const crag = erodedMountainFBM(dx * 2.2 + rk.seed, dy * 2.2 + rk.seed, 3);
+            const rDist = dx * dx + dy * dy - (crag - 0.45) * 0.55;
+            if (rDist < 1.0) {
+              const rz = Math.sqrt(Math.max(0, 1.0 - rDist));
+              const nX = dx + (crag - 0.5) * 0.8;
+              const nY = dy - 0.35;
+              const light = clamp(-nX * sunDir * 0.75 - nY * 0.65 + rz * 0.35, 0, 1);
+              let rockCol = light > 0.52
+                ? lerpCol(pal.soilMid, pal.soilWarm, (light - 0.52) * 2.0)
+                : lerpCol([18, 13, 9], pal.soilMid, light * 1.9);
+              // Touch of olive moss on upper flat rock facets
+              if (nY < -0.25 && crag > 0.55) {
+                rockCol = lerpCol(rockCol, pal.meadowMid, 0.45);
+              }
+              bR = rockCol[0]; bG = rockCol[1]; bB = rockCol[2];
+              hitBoulder = true;
+              break;
+            }
+          }
         }
+
+        if (hitBoulder) {
+          data[idx] = bR; data[idx + 1] = bG; data[idx + 2] = bB; data[idx + 3] = 255;
+          continue;
+        }
+
+        // Inside the Creek Water Channel
+        if (absDist < halfW) {
+          const waterU = (distFromCreek + halfW) / (halfW * 2.0); // 0 = left edge, 1 = right edge
+          const edgeDist = Math.min(waterU, 1.0 - waterU) * 2.0;
+
+          // Sample true vertical wet-on-wet reflection from upper mountain/sky buffer
+          const reflectY = clamp(Math.floor(horizonY - (y - horizonY) * 0.85 + Math.sin(y * 0.35 + x * 0.1) * 4), 18, horizonY - 4);
+          const refIdx = (reflectY * W + clamp(x + ((Math.sin(y * 0.25) * 3) | 0), 0, W - 1)) << 2;
+          const refCol = [data[refIdx], data[refIdx + 1], data[refIdx + 2]];
+
+          // Blend reflection with deep Phthalo water and dark bank overhang shadows
+          const centerGloss = Math.exp(-Math.pow((waterU - 0.52) / 0.28, 2));
+          let wCol = lerpCol(pal.waterDeep, refCol, clamp(0.25 + centerGloss * 0.55, 0, 0.85));
+          wCol = lerpCol([14, 24, 28], wCol, clamp(edgeDist * 2.4, 0.15, 1.0));
+
+          // Check Dual Waterfall Weirs (Upper drop at y=356..366, Lower drop at y=418..435)
+          const inDrop1 = (y >= 355 && y <= 366 && absDist < halfW * 0.78);
+          const inDrop2 = (y >= 417 && y <= 435 && absDist < halfW * 0.80);
+
+          if (inDrop1 || inDrop2) {
+            const dropTop = inDrop1 ? 355 : 417;
+            const dropLen = inDrop1 ? 11 : 18;
+            const dy = (y - dropTop) / dropLen;
+            // Vertical chute striations in falling water
+            const streamNoise = erodedMountainFBM(x * 0.28, y * 0.07, 3);
+            const foamMask = clamp((streamNoise - 0.25) * 1.6 + (1.0 - dy) * 0.35, 0, 1);
+            wCol = lerpCol(pal.waterMid, [246, 252, 255], foamMask);
+          } else {
+            // Foaming whitewater boils & trailing ripples below each waterfall drop
+            const below1 = (y > 366 && y < 382) ? (1.0 - (y - 366) / 16.0) : 0;
+            const below2 = (y > 435 && y < 462) ? (1.0 - (y - 435) / 27.0) : 0;
+            const boil = Math.max(below1, below2);
+            const rippleNoise = erodedMountainFBM(x * 0.08, y * 0.42, 3);
+
+            if (boil > 0 && absDist < halfW * 0.82) {
+              const splash = clamp((rippleNoise - 0.32) * 2.2 * boil, 0, 0.92);
+              wCol = lerpCol(wCol, [244, 250, 255], splash);
+            } else if (rippleNoise > 0.66 && edgeDist > 0.12) {
+              // Subtle horizontal knife-scraped waterlines
+              wCol = lerpCol(wCol, pal.waterSky, (rippleNoise - 0.66) * 2.2);
+            }
+          }
+
+          data[idx] = wCol[0]; data[idx + 1] = wCol[1]; data[idx + 2] = wCol[2]; data[idx + 3] = 255;
+          continue;
+        }
+
+        // 3. Eroded Rocky Creek Bank Ledges (Transition between water and grass)
+        if (absDist < halfW + bankW) {
+          const bankProg = (absDist - halfW) / bankW; // 0 at water edge, 1 at grass edge
+          const rockCrag = erodedMountainFBM(x * 0.18, y * 0.14, 4);
+          // Irregular jagged grass overhang creeping down over the upper bank
+          if (bankProg > 0.45 + (rockCrag - 0.5) * 0.45) {
+            // Fall through to meadow turf shader below!
+          } else {
+            const isSunBank = (distFromCreek < 0 && sunDir > 0) || (distFromCreek > 0 && sunDir < 0);
+            const bankShade = clamp((rockCrag - 0.35) * 1.5 + (isSunBank ? 0.25 : -0.15), 0, 1);
+            let bCol = bankShade > 0.55
+              ? lerpCol(pal.soilMid, pal.soilWarm, (bankShade - 0.55) * 2.2)
+              : lerpCol(pal.soilDark, pal.soilMid, bankShade * 1.8);
+            // Wet dark waterline rim at bankProg < 0.18
+            if (bankProg < 0.18) bCol = lerpCol([16, 12, 8], bCol, bankProg / 0.18);
+            data[idx] = bCol[0]; data[idx + 1] = bCol[1]; data[idx + 2] = bCol[2]; data[idx + 3] = 255;
+            continue;
+          }
+        }
+
+        // 4. Per-Pixel Anisotropic Wet-on-Wet Meadow & Grass Turf (ZERO OVALS!)
+        const nx = (x - 256.0) / 256.0;
+        // Rolling 3D valley hill undulations
+        const hillWave = fbm2D(nx * 3.5, t * 4.2, 3);
+        // High-frequency directional fan-brush bristle texture (stretched horizontally + vertically)
+        const turfBristle = erodedMountainFBM(x * 0.12 + hillWave * 2.0, y * 0.32, 4);
+        const microBlade = noiseDeriv(x * 0.65, y * 0.22).v;
+
+        // Ambient occlusion darkening toward foreground edges and under tree groves
+        const treeShadowZone = (x < 145 && y > 325) || (x > 395 && y > 315);
+        const sunPasture = clamp(0.55 - t * 0.42 + hillWave * 0.45 + (turfBristle - 0.5) * 0.55 + microBlade * 0.18 - (treeShadowZone ? 0.28 : 0), 0, 1);
+
+        let gCol;
+        if (sunPasture > 0.62) {
+          gCol = lerpCol(pal.meadowLight, pal.meadowGold, (sunPasture - 0.62) * 2.4);
+        } else if (sunPasture > 0.28) {
+          gCol = lerpCol(pal.meadowMid, pal.meadowLight, (sunPasture - 0.28) / 0.34);
+        } else {
+          gCol = lerpCol(pal.meadowDark, pal.meadowMid, sunPasture / 0.28);
+        }
+
+        // Earthy golden-brown dry grass & wildflower flecks in foreground
+        if (t > 0.45 && microBlade > 0.48 && turfBristle > 0.52) {
+          gCol = lerpCol(gCol, pal.soilWarm, 0.45);
+        }
+
+        data[idx] = gCol[0]; data[idx + 1] = gCol[1]; data[idx + 2] = gCol[2]; data[idx + 3] = 255;
+      }
     }
 
-    // Cabin
-    if(style === 'CABINSCAPE' || (rng() > 0.8 && style !== 'SEASCAPE')) {
-        let cx = 15 + rng()*30;
-        let cy = 45 + rng()*5;
-        
-        // Walls Van Dyke Brown
-        offscreenCtx.fillStyle = '#4a3018';
-        offscreenCtx.fillRect(cx, cy, 12, 8);
-        
-        // Roof Dark Sienna / Snow
-        offscreenCtx.fillStyle = (style==='WINTERSCAPE') ? '#fff' : '#2b1a0d';
-        drawPoly([[cx-2, cy], [cx+6, cy-5], [cx+14, cy]], (style==='WINTERSCAPE') ? '#fff' : '#2b1a0d');
-        
-        // Door & Window
-        offscreenCtx.fillStyle = '#111';
-        offscreenCtx.fillRect(cx+2, cy+3, 3, 5);
-        offscreenCtx.fillStyle = '#ffed4a'; // Warm light
-        offscreenCtx.fillRect(cx+7, cy+2, 3, 3);
+    // Commit full 512x512 per-pixel raycast landscape to canvas!
+    ctx.putImageData(imgData, 0, 0);
+
+    // Soft Misty Cloud Wisps Drifting Between Mountain Base and Foothills
+    for (let m = 0; m < 14; m++) {
+      const mx = 70 + rng() * 370;
+      const my = 238 + rng() * 48;
+      const mr = 26 + rng() * 40;
+      const mGrad = ctx.createRadialGradient(mx, my, 2, mx, my, mr);
+      mGrad.addColorStop(0.0, 'rgba(222, 230, 238, 0.36)');
+      mGrad.addColorStop(0.6, 'rgba(222, 230, 238, 0.12)');
+      mGrad.addColorStop(1.0, 'rgba(222, 230, 238, 0)');
+      ctx.fillStyle = mGrad;
+      ctx.fillRect(mx - mr, my - mr, mr * 2, mr * 2);
     }
 
-    // Bob's Signature (Bottom Right or Left)
-    if(tierIdx >= 6) {
-        let sigX = (rng() > 0.5) ? 50 : 5;
-        offscreenCtx.fillStyle = 'var(--alizarin-crimson)';
-        if(tierIdx === 9) offscreenCtx.shadowBlur = 3; offscreenCtx.shadowColor = 'red';
-        offscreenCtx.fillRect(sigX, 58, 4, 1);
-        offscreenCtx.fillRect(sigX, 57, 1, 2);
-        offscreenCtx.fillRect(sigX+3, 57, 1, 2);
-        offscreenCtx.shadowBlur = 0;
+    // --- 4. MICRO-BRISTLE DABBER (Replaces polka-dot circles with 1px painter bristle clusters) ---
+    function dabBristleCluster(cx, cy, spreadX, spreadY, count, colorArr, alpha) {
+      ctx.fillStyle = rgba(colorArr, alpha);
+      for (let i = 0; i < count; i++) {
+        const ang = rng() * Math.PI * 2;
+        const dist = Math.pow(rng(), 0.65);
+        const bx = cx + Math.cos(ang) * dist * spreadX;
+        const by = cy + Math.sin(ang) * dist * spreadY;
+        ctx.fillRect(bx, by, 1.3 + rng() * 1.2, 1.1 + rng() * 1.1);
+      }
     }
 
-    offscreenCtx.restore(); // Remove clip
+    // --- 5. WEATHERED LOG CABIN & MICRO-STIPPLED DECIDUOUS TREE ---
+    function drawMicroLeafyTree(tx, ty, height, width) {
+      // Multi-stemmed pale birch/aspen trunks
+      [-4, 3].forEach((off, idx) => {
+        ctx.strokeStyle = idx === 0 ? '#5c5042' : '#9e9282';
+        ctx.lineWidth = 2.2 - idx * 0.5;
+        ctx.beginPath();
+        ctx.moveTo(tx + off, ty);
+        ctx.quadraticCurveTo(tx + off * 1.8, ty - height * 0.5, tx + off * 2.5, ty - height * 0.88);
+        ctx.stroke();
+      });
 
-    return offscreenCanvas.toDataURL('image/png');
+      // 800 micro-stipple foliage dabs (No floating polka-dots!)
+      const boughs = 16;
+      for (let b = 0; b < boughs; b++) {
+        const bx = tx + (rng() - 0.5) * width * 1.6;
+        const by = (ty - height * 0.32) - rng() * (height * 0.68);
+        const rad = 8 + rng() * 12;
+        dabBristleCluster(bx, by + 2, rad, rad * 0.75, 28, pal.pineShadow, 0.85);
+        dabBristleCluster(bx, by, rad * 0.9, rad * 0.68, 24, pal.pineMid, 0.82);
+        const sunBias = bx > tx ? sunDir : -sunDir;
+        if (sunBias >= -0.2 || rng() > 0.35) {
+          dabBristleCluster(bx + sunDir * 2, by - 1.5, rad * 0.75, rad * 0.55, 20, pal.bushGold, 0.85);
+        }
+      }
+    }
+
+    if (hasCabin) {
+      const cx = cabinSide > 0 ? 356 : 88;
+      const cy = 336, cw = 58, ch = 28;
+
+      // Deciduous olive-gold tree nestled behind cabin
+      drawMicroLeafyTree(cx + cw * 0.76, cy + 8, 86, 30);
+
+      // Ground shadow & snow/path patch at cabin doorway
+      dabBristleCluster(cx + cw * 0.5, cy + ch + 1, cw * 0.65, 5, 90, pal.pineShadow, 0.75);
+      dabBristleCluster(cx - 4, cy + ch + 3, 22, 4, 65, [216, 224, 232], 0.68);
+
+      // Gable Front Wall & Shadowed Side Wall
+      ctx.fillStyle = '#3e291a';
+      ctx.fillRect(cx, cy, cw * 0.52, ch);
+      ctx.fillStyle = '#28190f';
+      ctx.fillRect(cx + cw * 0.52, cy, cw * 0.48, ch);
+
+      // Gable Peak
+      ctx.fillStyle = '#342215';
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + cw * 0.26, cy - 17);
+      ctx.lineTo(cx + cw * 0.52, cy);
+      ctx.closePath();
+      ctx.fill();
+
+      // Rough Palette-Knife Log Courses & Chinking
+      for (let ly = cy + 2; ly < cy + ch; ly += 3.2) {
+        ctx.fillStyle = rng() > 0.4 ? 'rgba(92, 64, 42, 0.55)' : 'rgba(20, 12, 7, 0.65)';
+        ctx.fillRect(cx + 1, ly, cw * 0.50, 1.3);
+        ctx.fillStyle = 'rgba(16, 10, 6, 0.7)';
+        ctx.fillRect(cx + cw * 0.52, ly, cw * 0.47, 1.4);
+      }
+
+      // Recessed Dark Doorway with Weathered Timber Frame
+      ctx.fillStyle = '#0e0805';
+      ctx.fillRect(cx + 11, cy + 8, 8, ch - 8);
+      ctx.fillStyle = '#684c34';
+      ctx.fillRect(cx + 10, cy + 7, 10, 1.5);
+      ctx.fillRect(cx + 10, cy + 7, 1.4, ch - 7);
+
+      // Subtle Weathered Window (Muted parchment frame, dark glass, no bright white box!)
+      const wx = cx + cw * 0.68, wy = cy + 9;
+      ctx.fillStyle = '#9c8e7e';
+      ctx.fillRect(wx, wy, 7.5, 7);
+      ctx.fillStyle = '#14100c';
+      ctx.fillRect(wx + 1.2, wy + 1.2, 5.1, 4.6);
+      ctx.fillStyle = '#7c6e5e';
+      ctx.fillRect(wx + 3.4, wy + 1.2, 0.8, 4.6);
+
+      // Deep Eave Drop Shadow
+      ctx.fillStyle = 'rgba(8, 5, 3, 0.85)';
+      ctx.fillRect(cx + cw * 0.50, cy, cw * 0.52, 3.5);
+
+      // Pitched Roof with Broken Palette-Knife Snow & Shingles
+      ctx.fillStyle = '#1a100a';
+      ctx.beginPath();
+      ctx.moveTo(cx - 5, cy + 2);
+      ctx.lineTo(cx + cw * 0.26, cy - 18);
+      ctx.lineTo(cx + cw * 0.52, cy + 2);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = '#b8c4d0';
+      ctx.beginPath();
+      ctx.moveTo(cx + cw * 0.26, cy - 18);
+      ctx.lineTo(cx + cw * 0.84, cy - 17);
+      ctx.lineTo(cx + cw + 5, cy + 1.5);
+      ctx.lineTo(cx + cw * 0.52, cy + 2);
+      ctx.closePath();
+      ctx.fill();
+
+      // Broken shingle & snow knife texture across roof pitch
+      for (let r = 0; r < 85; r++) {
+        const u = rng(), v = rng();
+        const rx = lerp(cx + cw * 0.26, cx + cw * 0.84, u) + v * (cw * 0.24);
+        const ry = lerp(cy - 17, cy + 1, v);
+        ctx.fillStyle = rng() > 0.38 ? 'rgba(244, 248, 252, 0.85)' : 'rgba(46, 38, 32, 0.75)';
+        ctx.fillRect(rx, ry, 2.5 + rng() * 4, 1.2);
+      }
+    }
+
+    // --- 6. WET-ON-WET FAN-BRUSH CONIFER PINES & STIPPLED BUSHES ---
+    function drawMasterPine(x, y, height, width) {
+      // Dark Root Grounding Shadow into Meadow
+      dabBristleCluster(x, y + 2, width * 0.55, 6, 85, pal.pineShadow, 0.82);
+
+      // Tapered Trunk (partially visible through boughs)
+      ctx.fillStyle = '#180f09';
+      ctx.beginPath();
+      ctx.moveTo(x - width * 0.04, y);
+      ctx.lineTo(x, y - height);
+      ctx.lineTo(x + width * 0.04, y);
+      ctx.closePath();
+      ctx.fill();
+
+      // Sharp leader spire at top of pine
+      ctx.strokeStyle = rgb(pal.pineShadow);
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(x, y - height - 6);
+      ctx.lineTo(x, y - height + 8);
+      ctx.stroke();
+
+      const tiers = Math.floor(height * 0.42);
+      for (let i = 0; i <= tiers; i++) {
+        const prog = i / tiers;
+        const by = (y - height) + prog * height * 0.94;
+        // Organic irregular bough width (not a smooth mathematical triangle!)
+        const irregularity = 0.78 + 0.38 * Math.sin(i * 1.9 + seedInt) + (rng() - 0.5) * 0.25;
+        const span = (0.04 + Math.pow(prog, 0.82) * 0.96) * width * irregularity;
+
+        // Pass 1: Midnight-Green / Black Interior Bough Clumps
+        const clumpCount = Math.floor(6 + prog * 14);
+        for (let c = 0; c < clumpCount; c++) {
+          const offset = (rng() - 0.5) * span;
+          const bx = x + offset;
+          // Upward-flicked or slightly drooping fan-brush bough curve
+          const droop = Math.abs(offset) * 0.18 + (rng() - 0.5) * 3.5;
+          const byLocal = by + droop;
+
+          dabBristleCluster(bx, byLocal, 2.5 + prog * 3.5, 1.8 + prog * 2.2, 7, pal.pineShadow, 0.94);
+        }
+
+        // Pass 2: Sap-Green Midtone & Warm Golden-Ochre Sunlit Bough Tips
+        const hiClumps = Math.floor(4 + prog * 9);
+        for (let h = 0; h < hiClumps; h++) {
+          // Bias highlights toward the sun-facing side while leaving deep shadow gaps
+          const side = (rng() - 0.38 * sunDir) * span * 0.48;
+          const hx = x + side;
+          const hy = by + Math.abs(side) * 0.16 + (rng() - 0.5) * 2.5;
+          const isSunTip = (side * sunDir > -span * 0.12) && rng() > 0.25;
+          const col = isSunTip ? pal.pineSun : pal.pineMid;
+
+          dabBristleCluster(hx, hy - 0.8, 2.0 + prog * 2.5, 1.4 + prog * 1.5, 5, col, 0.88);
+        }
+      }
+    }
+
+    function drawMicroBush(x, y, rad, isGolden = true) {
+      // Ground shadow
+      dabBristleCluster(x, y + rad * 0.35, rad * 1.25, rad * 0.45, 70, pal.pineShadow, 0.88);
+      // Dark interior foliage mass
+      for (let c = 0; c < 8; c++) {
+        const cx = x + (rng() - 0.5) * rad * 1.4;
+        const cy = y + (rng() - 0.5) * rad * 0.7;
+        dabBristleCluster(cx, cy, rad * 0.55, rad * 0.45, 26, pal.pineShadow, 0.92);
+        dabBristleCluster(cx, cy - 1.5, rad * 0.48, rad * 0.38, 20, pal.pineMid, 0.85);
+      }
+      // Fine 1px sunlit leaf stipples on upper crests
+      for (let c = 0; c < 10; c++) {
+        const cx = x + (rng() - 0.45 * sunDir) * rad * 1.3;
+        const cy = y - rng() * rad * 0.65 + (rng() - 0.5) * rad * 0.3;
+        const col = (isGolden && rng() > 0.3) ? pal.bushGold : pal.meadowLight;
+        dabBristleCluster(cx, cy, rad * 0.42, rad * 0.32, 18, col, 0.88);
+      }
+    }
+
+    // Midground Valley Conifers (Receding scale)
+    drawMasterPine(156, 338, 48, 20);
+    drawMasterPine(175, 342, 36, 15);
+    drawMasterPine(202, 334, 26, 11);
+    drawMasterPine(318, 330, 32, 13);
+    drawMasterPine(338, 332, 54, 22);
+    drawMasterPine(358, 337, 42, 17);
+
+    // Foreground Framing Pines (Left & Right)
+    drawMasterPine(80, 394, 164, 62);
+    drawMasterPine(48, 404, 134, 50);
+    drawMasterPine(112, 410, 110, 42);
+    drawMasterPine(26, 396, 114, 42);
+
+    drawMasterPine(462, 370, 158, 60);
+    drawMasterPine(488, 384, 118, 45);
+    drawMasterPine(428, 364, 92, 36);
+
+    // Foreground Micro-Stippled Bushes & Creekside Scrub
+    drawMicroBush(54, 424, 24, true);
+    drawMicroBush(124, 444, 20, true);
+    drawMicroBush(176, 466, 16, false);
+    drawMicroBush(324, 354, 13, true);
+    drawMicroBush(440, 410, 22, true);
+    drawMicroBush(468, 444, 25, false);
+
+    // --- 7. RECURSIVE SCRIPT-LINER DEADWOOD TWIGS & WILD REEDS ---
+    function drawRecursiveTwig(x, y, len, angle, width, depth) {
+      if (depth <= 0 || len < 3) return;
+      const midX = x + Math.cos(angle) * len * 0.5 + (rng() - 0.5) * 3;
+      const midY = y + Math.sin(angle) * len * 0.5;
+      const endX = x + Math.cos(angle) * len;
+      const endY = y + Math.sin(angle) * len;
+
+      ctx.strokeStyle = 'rgba(20, 13, 8, 0.85)';
+      ctx.lineWidth = width + 0.4;
+      ctx.beginPath();
+      ctx.moveTo(x + 0.5, y + 0.5);
+      ctx.quadraticCurveTo(midX + 0.5, midY + 0.5, endX + 0.5, endY + 0.5);
+      ctx.stroke();
+
+      ctx.strokeStyle = depth > 2 ? 'rgba(218, 204, 184, 0.85)' : 'rgba(176, 158, 134, 0.75)';
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.quadraticCurveTo(midX, midY, endX, endY);
+      ctx.stroke();
+
+      drawRecursiveTwig(endX, endY, len * (0.65 + rng() * 0.18), angle - 0.28 - rng() * 0.25, width * 0.7, depth - 1);
+      if (rng() > 0.25) {
+        drawRecursiveTwig(midX, midY, len * (0.55 + rng() * 0.2), angle + 0.32 + rng() * 0.3, width * 0.65, depth - 1);
+      }
+    }
+
+    for (let b = 0; b < 4; b++) {
+      drawRecursiveTwig(96 + b * 6, 488, 22 + rng() * 11, -Math.PI * 0.42 + (rng() - 0.5) * 0.5, 1.1, 4);
+      drawRecursiveTwig(40 + b * 5, 458, 18 + rng() * 8, -Math.PI * 0.48 + (rng() - 0.5) * 0.5, 0.9, 3);
+      drawRecursiveTwig(442 + b * 6, 460, 21 + rng() * 10, -Math.PI * 0.55 + (rng() - 0.5) * 0.5, 1.0, 4);
+    }
+
+    // Fine Script-Liner Grass & Reed Tufts (Strictly on land/banks, never floating in mid-stream!)
+    for (let t = 0; t < 26; t++) {
+      const ty = 415 + rng() * 75;
+      const { cx, halfW } = getCreekCenter(ty);
+      const onLeft = rng() > 0.45;
+      const tx = onLeft
+        ? clamp(cx - halfW - 4 - rng() * 160, 22, cx - halfW - 2)
+        : clamp(cx + halfW + 4 + rng() * 140, cx + halfW + 2, W - 22);
+
+      dabBristleCluster(tx, ty + 1, 5, 2.5, 12, pal.pineShadow, 0.75);
+      const blades = 5 + Math.floor(rng() * 5);
+      for (let b = 0; b < blades; b++) {
+        const h = 7 + rng() * 14;
+        const lean = (rng() - 0.5) * 10;
+        ctx.strokeStyle = rng() > 0.4 ? 'rgba(178, 152, 72, 0.82)' : 'rgba(58, 76, 30, 0.85)';
+        ctx.lineWidth = 0.85;
+        ctx.beginPath();
+        ctx.moveTo(tx + (rng() - 0.5) * 4, ty);
+        ctx.quadraticCurveTo(tx + lean * 0.4, ty - h * 0.6, tx + lean, ty - h);
+        ctx.stroke();
+      }
+    }
+
+    // --- 8. BOB ROSS 'ROSS' SIGNATURE (TIERS 8-10 ONLY) ---
+    if (tierIdx >= 7) {
+      ctx.save();
+      ctx.fillStyle = '#b81d24';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.letterSpacing = '1.5px';
+      if (tierIdx === 9) {
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = '#e32636';
+      }
+      ctx.fillText('ROSS', 435, 482);
+      ctx.restore();
+    }
+
+    // --- 9. 3D MITERED DARK WALNUT GALLERY FRAME ---
+    const fw = 18;
+    ctx.fillStyle = '#281810';
+    ctx.fillRect(0, 0, W, fw);
+    ctx.fillRect(0, H - fw, W, fw);
+    ctx.fillRect(0, 0, fw, H);
+    ctx.fillRect(W - fw, 0, fw, H);
+
+    ctx.strokeStyle = '#3e271b';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(fw * 0.45, fw * 0.45, W - fw * 0.9, H - fw * 0.9);
+    ctx.strokeStyle = '#0e0805';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(fw - 1, fw - 1, W - (fw - 1) * 2, H - (fw - 1) * 2);
+
+    return offscreenCanvas.toDataURL('image/jpeg', 0.94);
   }
 
   /* ================= STATE ================= */
   let State = {
     funds: 50000000, 
-    fuelReserve: 250000, // Supplies
+    fuelReserve: 250000,
     fuelSpotPrice: 2.85,
     buyMode: 1, 
     sortHangarMode: 'val',
@@ -694,7 +1418,7 @@
   let globalInterval = null;
   let needsFleetRender = false;
 
-  /* ================= UTILITY & BASE36 ================= */
+  /* ================= UTILITY & LIGHTBOX ================= */
   function fmt(n) {
     if (n >= 1e12) return (n / 1e12).toFixed(2) + "T";
     if (n >= 1e9) return (n / 1e9).toFixed(2) + "B";
@@ -713,42 +1437,76 @@
     if($('hud-pilot-count')) $('hud-pilot-count').innerText = State.pilots.length;
     if($('hud-fuel')) $('hud-fuel').innerText = fmt(State.fuelReserve);
   }
+
+  function inspectPainting(uid, sourceType) {
+    let item = null;
+    if (sourceType === 'fleet') item = State.fleet.find(x => x.uid === uid);
+    else if (sourceType === 'gallery') item = State.gallery.find(x => x.gid === uid);
+    else if (sourceType === 'auction') {
+      const a = State.auctions.find(x => x.item && x.item.uid === uid);
+      if (a) item = a.item;
+    }
+    if (!item) return;
+    const src = ensurePaintingImage(item);
+    $('lightbox-img').src = src;
+    $('lightbox-caption').innerText = `${item.name} [${item.role}] — Click anywhere to close`;
+    $('lightbox-modal').classList.add('open');
+  }
+
+  function closeLightbox() {
+    $('lightbox-modal').classList.remove('open');
+  }
   
   function saveGame() { 
     let s = JSON.parse(JSON.stringify(State));
     s.fleet.forEach(p => delete p.imgData);
     s.marketCars.forEach(p => delete p.imgData);
     s.gallery.forEach(g => delete g.imgData);
-    s.auctions.forEach(a => { if(a.item.imgData) delete a.item.imgData; });
-    localStorage.setItem('joyOfCollectingV1', JSON.stringify(s)); 
+    s.auctions.forEach(a => { if(a.item && a.item.imgData) delete a.item.imgData; });
+    localStorage.setItem('joyOfCollectingMasterV5', JSON.stringify(s)); 
     toast("Studio Progress Saved."); 
   }
   
   function loadGame() {
-    let s = localStorage.getItem('joyOfCollectingV1');
+    let s = localStorage.getItem('joyOfCollectingMasterV5') || localStorage.getItem('joyOfCollectingMasterV4') || localStorage.getItem('joyOfCollectingV3') || localStorage.getItem('joyOfCollectingV2') || localStorage.getItem('joyOfCollectingV1');
     if (s) {
-      State = JSON.parse(s);
-      if(!State.gallery) State.gallery = [];
-      if(!State.routes || State.routes.length < 400) State.routes = generateRoutes();
-      
-      State.fleet.forEach(p => p.imgData = generatePaintingImage(p.seedInt, p.role, p.tierIndex));
-      State.marketCars.forEach(p => p.imgData = generatePaintingImage(p.seedInt, p.role, p.tierIndex));
-      State.gallery.forEach(g => g.imgData = generatePaintingImage(g.seedInt, g.role, g.tierIdx));
-      State.auctions.forEach(a => { if(a.type==='plane') a.item.imgData = generatePaintingImage(a.item.seedInt, a.item.role, a.item.tierIndex); });
+      let loaded = JSON.parse(s);
+      State = Object.assign({
+        funds: 50000000, fuelReserve: 250000, fuelSpotPrice: 2.85, buyMode: 1,
+        sortHangarMode: 'val', filterHangarRole: 'ALL', filterHangarTier: 'ALL',
+        sortPilotsMode: 'val', filterPilotTier: 'ALL', filterRouteCat: 'ALL',
+        fleet: [], pilots: [], routes: [], auctions: [], marketCars: [], gallery: [],
+        marketTimer: 10.0, upgrades: { mkt: 0, eng: 0 },
+        automation: { autoDispatch: false, autoMRO: false, autoRefuel: false },
+        claimedMilestones: [], sideMissions: [], statAuctionsSold: 0, statPlanesScrapped: 0
+      }, loaded);
 
-      State.fleet.forEach(p => { p.status = 'READY'; p.flightEnd = 0; p.flightStart = 0; });
-      updateHUD(); setTab('market');
-      toast("Studio Restored.");
+      if(!State.routes || State.routes.length < 400) State.routes = generateRoutes();
+      if(!State.sideMissions || State.sideMissions.length === 0) generateSideMissions();
+      
+      imageCache.clear();
+      State.fleet.forEach(p => {
+        if (p.tierIndex === undefined && p.tIdx !== undefined) p.tierIndex = p.tIdx;
+        delete p.imgData;
+        ensurePaintingImage(p);
+        p.status = 'READY'; p.flightEnd = 0; p.flightStart = 0;
+      });
+      State.gallery.forEach(g => { delete g.imgData; ensurePaintingImage(g); });
+      State.auctions.forEach(a => { if(a.type==='plane') { delete a.item.imgData; ensurePaintingImage(a.item); } });
+
+      renderAllTabs();
+      setTab('market');
+      toast("Studio Restored with Updated Shader.");
     } else {
       toast("No saved studio found.");
     }
   }
 
   function setBuyMode(val) {
-      State.buyMode = val;
-      ['buy-1','buy-0.25','buy-0.5','buy-1.0'].forEach(id => { if($(id)) $(id).classList.remove('active'); });
-      let sel = val===1?'buy-1':val===0.25?'buy-0.25':val===0.5?'buy-0.5':'buy-1.0';
-      if($(sel)) $(sel).classList.add('active');
+    State.buyMode = val;
+    ['buy-1','buy-0.25','buy-0.5','buy-1.0'].forEach(id => { if($(id)) $(id).classList.remove('active'); });
+    let sel = val===1?'buy-1':val===0.25?'buy-0.25':val===0.5?'buy-0.5':'buy-1.0';
+    if($(sel)) $(sel).classList.add('active');
   }
 
   /* BASE36 FOR DEALERS */
@@ -789,22 +1547,22 @@
     let tD = TIERS[tIdx];
     let val = Math.floor(tD.baseVal * 1.0); 
     let cost = Math.max(50000, Math.floor(val * 0.8)); 
-    let cap = Math.floor(5 + (tIdx * 45)); // Age
+    let cap = Math.floor(5 + (tIdx * 45));
     let rnge = Math.floor(1000 + (tIdx * 900));
-    let burn = Math.floor(20 + (tIdx * 15)); // Supplies
+    let burn = Math.floor(20 + (tIdx * 15));
     let seedInt = (pIdx * 960 + bIdx * 120 + mIdx * 6 + rIdx) * 31 + tIdx;
 
     let importedTree = {
       uid: 'P' + Math.floor(100+Math.random()*899) + 'BR',
       pIdx, bIdx, mIdx, rIdx, tierIndex: tIdx,
       seedInt: seedInt,
-      imgData: generatePaintingImage(seedInt, ART_STYLES[rIdx % ART_STYLES.length], tIdx),
+      imgData: null,
       name: `${ART_PREFIXES[pIdx]} ${ART_ORIGINS[bIdx]} ${ART_SUBJECTS[mIdx]}`,
       role: ART_STYLES[rIdx % ART_STYLES.length], tierName: tD.name, tierColor: tD.color,
       value: val, cost: cost, capacity: cap, range: rnge, fuelBurn: burn,
       condition: 100, status: 'READY', assignedRoute: null, assignedPilot: null
     };
-    
+    ensurePaintingImage(importedTree);
     State.fleet.push(importedTree);
     updateHUD(); renderFleet(); toast("Painting acquired via Auth Code!");
   }
@@ -817,7 +1575,7 @@
 
     roles.forEach(role => {
       let pool = ZONE_CAT[role] || ZONE_CAT["MOUNTAINSCAPE"];
-      let count = role === "MOUNTAINSCAPE" || role === "WATERSCAPE" ? 80 : 60; // 400 total
+      let count = role === "MOUNTAINSCAPE" || role === "WATERSCAPE" ? 80 : 60;
       for(let i=0; i<count; i++) {
         let a1, a2, pair;
         let attempts = 0;
@@ -846,7 +1604,7 @@
     return rts;
   }
 
-  function harvestStrain(tIdx) {
+  function harvestStrain(tIdx, generateImg = false) {
     let pIdx = Math.floor(Math.random() * ART_PREFIXES.length);
     let bIdx = Math.floor(Math.random() * ART_ORIGINS.length);
     let mIdx = Math.floor(Math.random() * ART_SUBJECTS.length);
@@ -857,18 +1615,20 @@
     let val = Math.floor(tD.baseVal * fluct);
     let seedInt = Math.floor(Math.random() * 9999999);
 
-    return {
+    const item = {
       uid: 'P' + Math.floor(100+Math.random()*899) + 'BR',
       pIdx, bIdx, mIdx, rIdx, tierIndex: tIdx, seedInt: seedInt,
-      imgData: generatePaintingImage(seedInt, ART_STYLES[rIdx], tIdx),
+      imgData: null,
       name: `${ART_PREFIXES[pIdx]} ${ART_ORIGINS[bIdx]} ${ART_SUBJECTS[mIdx]}`,
       role: ART_STYLES[rIdx], tierName: tD.name, tierColor: tD.color,
       value: val, cost: Math.max(50000, Math.floor(val * 0.8)), 
-      capacity: Math.floor(5 + (tIdx * 45) * fluct), // Age
+      capacity: Math.floor(5 + (tIdx * 45) * fluct),
       range: Math.floor(1000 + (tIdx * 900) * fluct), 
-      fuelBurn: Math.floor(20 + (tIdx * 15)), // Supplies
+      fuelBurn: Math.floor(20 + (tIdx * 15)),
       condition: 100, status: 'READY', assignedRoute: null, assignedPilot: null
     };
+    if (generateImg) ensurePaintingImage(item);
+    return item;
   }
 
   function hireCourier(fIdx, lIdx, cIdx, tIdx, bIdx) {
@@ -882,12 +1642,12 @@
     };
   }
 
-  /* ================= MARKETS & HATCHERY ================= */
+  /* ================= MARKETS (NO IMAGES ON MARKET LISTINGS) ================= */
   function refreshMarket() {
     State.marketCars = [];
     for(let i=0; i<5; i++) {
       let r = Math.random()*100; let tI = r>99.9?9 : r>99?8 : r>95?7 : r>85?6 : r>70?5 : r>50?4 : r>30?3 : r>15?2 : r>5?1 : 0;
-      State.marketCars.push(harvestStrain(tI));
+      State.marketCars.push(harvestStrain(tI, false));
     }
     renderMarket();
   }
@@ -902,12 +1662,9 @@
             <span style="color:${c.tierColor}; font-weight:bold; font-size:10px;">[${c.tierName}]</span>
             <span class="badge" style="color:${rCol}; border-color:${rCol};">${c.role}</span>
           </div>
-          <div class="bud-art-container">
-            <img class="bud-pixel-canvas" src="${c.imgData}">
-            <div style="flex:1;">
-              <div style="font-size:12px; font-weight:900; color:#fff;">${c.name}</div>
-              <div style="font-size:9px; color:var(--silver-dim); margin-top:2px;">Style: ${c.role}</div>
-            </div>
+          <div style="background:#161616; border:1px dashed var(--panel-border); padding:8px 10px; border-radius:3px;">
+            <div style="font-size:12px; font-weight:900; color:#fff;">${c.name}</div>
+            <div style="font-size:9px; color:var(--wood-light); margin-top:2px;">Unrestored ${c.role} Canvas — Purchase to Unveil in Studio</div>
           </div>
           <div class="spec-grid">
             <div><span>AGE:</span> ${c.capacity} YRS</div>
@@ -920,7 +1677,7 @@
               <div style="font-size:9px; color:var(--silver-dim);">Est Val: $${fmt(c.value)}</div>
               <div style="font-size:12px; color:var(--status-green); font-weight:bold; font-family:monospace;">Price: $${fmt(c.cost)}</div>
             </div>
-            <button class="btn btn-wood" onclick="buyMarketStrain(${idx})">BUY</button>
+            <button class="btn btn-wood" onclick="buyMarketStrain(${idx})">BUY & UNVEIL</button>
           </div>
         </div>
       `;
@@ -930,8 +1687,12 @@
   function buyMarketStrain(idx) {
     let c = State.marketCars[idx]; if(!c) return;
     if(State.funds < c.cost) { toast("Insufficient funds."); return; }
-    State.funds -= c.cost; State.fleet.push(c); State.marketCars.splice(idx, 1);
-    toast(`Added to Studio: ${c.name}`); updateHUD(); renderMarket();
+    State.funds -= c.cost;
+    ensurePaintingImage(c);
+    State.fleet.push(c);
+    State.marketCars.splice(idx, 1);
+    toast(`Unveiled in Studio: ${c.name}`);
+    updateHUD(); renderMarket(); renderFleet();
   }
 
   function buySeeds(bIdx, count) {
@@ -943,9 +1704,9 @@
     let tArr = bIdx===0?[0,1,2,3]:bIdx===1?[2,3,4,5]:bIdx===2?[4,5,6,7]:[6,7,8,9];
     for(let i=0; i<c; i++) {
       let r = Math.random()*100; let tI = r>95?tArr[3]:r>80?tArr[2]:r>50?tArr[1]:tArr[0];
-      State.fleet.push(harvestStrain(tI));
+      State.fleet.push(harvestStrain(tI, true));
     }
-    updateHUD(); toast(`Won ${c}x Blind Auctions.`);
+    updateHUD(); renderFleet(); toast(`Won ${c}x Blind Auctions! Check The Studio.`);
   }
 
   function buyResumes(bIdx, count) {
@@ -959,7 +1720,7 @@
       let r = Math.random()*100; let tI = r>95?tArr[3]:r>80?tArr[2]:r>50?tArr[1]:tArr[0];
       State.pilots.push(hireCourier(Math.floor(Math.random()*20), Math.floor(Math.random()*20), Math.floor(Math.random()*8), tI, Math.floor(Math.random()*4)));
     }
-    updateHUD(); toast(`Hired ${c}x Dealers.`);
+    updateHUD(); renderPilots(); renderFleet(); toast(`Hired ${c}x Dealers.`);
   }
 
   function buyFuelFixed(amount) {
@@ -972,7 +1733,7 @@
     toast(`Bought ${fmt(gal)} Supplies.`); updateHUD();
   }
 
-  /* ================= INVENTORY (LAIR) ================= */
+  /* ================= THE STUDIO (INVENTORY) ================= */
   function sortHangar(mode) { State.sortHangarMode = mode; renderFleet(); }
   function filterHangarRole(val) { State.filterHangarRole = val; renderFleet(); }
   function filterHangarTier(val) { State.filterHangarTier = val; renderFleet(); }
@@ -1029,7 +1790,7 @@
     if(State.filterHangarRole !== 'ALL') filtered = filtered.filter(p => p.role === State.filterHangarRole);
     if(State.filterHangarTier !== 'ALL') filtered = filtered.filter(p => p.tierIndex === parseInt(State.filterHangarTier));
     
-    if(filtered.length===0) { list.innerHTML=`<div style="text-align:center; padding:20px; color:var(--silver-dim); font-size:11px;">No paintings match current filters.</div>`; return; }
+    if(filtered.length===0) { list.innerHTML=`<div style="text-align:center; padding:20px; color:var(--silver-dim); font-size:11px;">No paintings in The Studio match current filters. Buy canvases in Thrift Shops or Storage Units!</div>`; return; }
 
     if(State.sortHangarMode==='val') filtered.sort((a,b)=>b.value-a.value);
     if(State.sortHangarMode==='tier') filtered.sort((a,b)=>b.tierIndex-a.tierIndex);
@@ -1052,6 +1813,7 @@
     });
 
     filtered.forEach(p => {
+      ensurePaintingImage(p);
       let rCol = p.role === 'MOUNTAINSCAPE' ? '#a855f7' : p.role === 'WATERSCAPE' ? '#60a5fa' : p.role === 'FORESTSCAPE' ? '#4ade80' : p.role === 'WINTERSCAPE' ? '#f5f5f5' : p.role === 'CABINSCAPE' ? '#fbbf24' : '#fb923c';
       
       let pOpts = routeOptionsCache[p.role];
@@ -1076,12 +1838,13 @@
           </div>
           
           <div class="bud-art-container">
-            <img class="bud-pixel-canvas" src="${p.imgData}">
+            <img class="bud-pixel-canvas" src="${p.imgData}" onclick="inspectPainting('${p.uid}', 'fleet')">
             <div style="flex:1;">
               <div style="font-size:10px; font-weight:bold; color:var(--silver-bright);">Style: ${p.role}</div>
               <div style="font-size:9px; color:var(--silver-dim);">Val: $${fmt(p.value)}</div>
+              <div style="font-size:8px; color:var(--wood-light); margin-top:2px;">🔍 Click painting to zoom</div>
             </div>
-            <button class="btn btn-wood" style="padding:4px 6px; font-size:9px;" onclick="snapGalleryPic('${p.uid}')">📸 Add to Gallery</button>
+            <button class="btn btn-wood" style="padding:4px 6px; font-size:9px;" onclick="snapGalleryPic('${p.uid}')">📸 Exhibit</button>
           </div>
 
           <div style="display:flex; justify-content:space-between; font-size:8.5px; font-family:monospace; color:var(--silver-dim);">
@@ -1094,6 +1857,7 @@
           
           <div style="display:flex; justify-content:space-between; margin-top:3px;">
             <div style="display:flex; gap:3px;">
+              <button class="btn" style="padding:3px 5px; font-size:8px;" onclick="exportStrain('${p.uid}')">Code</button>
               <button class="btn btn-purple" style="padding:3px 5px; font-size:8px;" ${p.status==='IN_FLIGHT'?'disabled':''} onclick="initAuction('${p.uid}', 'plane')">Sotheby's</button>
               <button class="btn btn-danger" style="padding:3px 5px; font-size:8px;" ${p.status==='IN_FLIGHT'?'disabled':''} onclick="consumeStrain('${p.uid}')">Donate</button>
             </div>
@@ -1131,7 +1895,7 @@
   function snapGalleryPic(uid) {
     let p = State.fleet.find(x => x.uid === uid);
     if(!p) return;
-    
+    ensurePaintingImage(p);
     State.gallery.push({
       gid: "gal_" + Date.now() + Math.floor(Math.random()*1000),
       seedInt: p.seedInt, mIdx: p.mIdx, bIdx: p.bIdx, role: p.role, tierIdx: p.tierIndex,
@@ -1140,7 +1904,7 @@
     });
     
     toast(`📸 Added to The Grand Exhibition!`);
-    if($('tab-gallery').classList.contains('active')) renderGallery();
+    renderGallery();
   }
 
   function toggleGalleryLock(gid) {
@@ -1161,11 +1925,12 @@
     const list = $('gallery-grid'); if(!list) return; list.innerHTML = '';
     
     if(State.gallery.length === 0) { 
-        list.innerHTML=`<div style="text-align:center; padding:20px; color:var(--silver-dim); font-size:11px;">Your Exhibition is empty. Snap some canvases from the Studio!</div>`; 
+        list.innerHTML=`<div style="text-align:center; padding:20px; color:var(--silver-dim); font-size:11px;">Your Exhibition is empty. Click "📸 Exhibit" on any painting in The Studio!</div>`; 
         return; 
     }
 
     State.gallery.forEach(g => {
+      ensurePaintingImage(g);
       let rCol = g.role === 'MOUNTAINSCAPE' ? '#a855f7' : g.role === 'WATERSCAPE' ? '#60a5fa' : g.role === 'FORESTSCAPE' ? '#4ade80' : g.role === 'WINTERSCAPE' ? '#f5f5f5' : g.role === 'CABINSCAPE' ? '#fbbf24' : '#fb923c';
       
       list.innerHTML += `
@@ -1175,10 +1940,10 @@
             <span class="badge" style="color:${rCol}; border-color:${rCol};">${g.role}</span>
           </div>
           <div style="display:flex; justify-content:center; padding:10px 0;">
-             <img src="${g.imgData}" style="width:96px; height:96px; image-rendering:pixelated; background:#000; border:1px solid #111; border-radius:4px; box-shadow: 3px 3px 10px rgba(0,0,0,0.8);" />
+             <img src="${g.imgData}" onclick="inspectPainting('${g.gid}', 'gallery')" style="width:168px; height:168px; image-rendering:auto; background:#000; border:1px solid #111; border-radius:4px; box-shadow: 3px 3px 12px rgba(0,0,0,0.85); cursor:zoom-in;" />
           </div>
           <div style="text-align:center; font-size:14px; font-weight:900; color:#fff;">${g.name}</div>
-          <div style="text-align:center; font-size:9px; color:var(--silver-dim); margin-bottom: 8px;">Masterpiece Archival Record</div>
+          <div style="text-align:center; font-size:9px; color:var(--silver-dim); margin-bottom: 8px;">Archival Masterpiece (Click to Enlarge)</div>
           <div style="display:flex; justify-content:space-between; gap: 4px;">
             <button class="btn" style="flex:1;" onclick="toggleGalleryLock('${g.gid}')">${g.locked ? 'UNLOCK 🔓' : 'LOCK 🔒'}</button>
             <button class="btn btn-danger" style="flex:1;" ${g.locked ? 'disabled' : ''} onclick="deleteGalleryPic('${g.gid}')">REMOVE</button>
@@ -1197,7 +1962,7 @@
     
     let filtered = [...State.pilots];
     if(State.filterPilotTier !== 'ALL') filtered = filtered.filter(p => p.tierIndex === parseInt(State.filterPilotTier));
-    if(filtered.length===0) { grid.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--silver-dim); font-size:11px;">No dealers match filter criteria.</div>`; return; }
+    if(filtered.length===0) { grid.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--silver-dim); font-size:11px;">No dealers hired yet. Hire dealers in the Storage Units tab!</div>`; return; }
 
     if(State.sortPilotsMode==='val') filtered.sort((a,b)=>b.value-a.value);
     if(State.sortPilotsMode==='tier') filtered.sort((a,b)=>b.tierIndex-a.tierIndex);
@@ -1346,7 +2111,7 @@
     if(!m || !m.readyToClaim) return;
     
     State.funds += m.rewardCash;
-    let bonusStrain = harvestStrain(m.rewardTier); 
+    let bonusStrain = harvestStrain(m.rewardTier, true); 
     State.fleet.push(bonusStrain);
     toast(`Client Paid! +$${fmt(m.rewardCash)} & ${bonusStrain.name} claimed!`);
 
@@ -1364,7 +2129,7 @@
         rewardTier: Math.min(9, Math.floor(rt.dist / 1000))
     });
 
-    updateHUD(); renderSideMissions();
+    updateHUD(); renderSideMissions(); renderFleet();
   }
 
   function renderMilestones() {
@@ -1415,7 +2180,7 @@
     let cost = getUpgCost(type, State.upgrades[type]);
     if(State.funds < cost) { toast("Insufficient Funds."); return; }
     State.funds -= cost; State.upgrades[type]++;
-    updateHUD(); renderUpgrades(); toast("Studio capability expanded.");
+    updateHUD(); renderUpgrades(); renderRoutes(); toast("Studio capability expanded.");
   }
 
   /* ================= EXPEDITION DISPATCH ================= */
@@ -1460,7 +2225,7 @@
         if(!m.readyToClaim && p.assignedRoute === m.reqRoute && p.role === m.reqRole) {
             m.readyToClaim = true;
             toast(`Commission Complete: ${m.title}`);
-            if($('tab-checklist').classList.contains('active')) renderSideMissions();
+            renderSideMissions();
         }
     });
 
@@ -1470,11 +2235,17 @@
   function maintainAirframe(pUid) { const p=State.fleet.find(x=>x.uid===pUid); if(!p||p.status==='IN_FLIGHT')return; let c=Math.floor((100-p.condition)*2500); if(State.funds<c)return; State.funds-=c; p.condition=100; updateHUD(); needsFleetRender = true; }
   function maintainAll() { let c=0; State.fleet.filter(p=>p.condition<90&&p.status!=='IN_FLIGHT').forEach(p=>c+=Math.floor((100-p.condition)*2500)); if(c===0||State.funds<c)return; State.funds-=c; State.fleet.forEach(p=>p.condition=100); updateHUD(); renderFleet(); }
 
-  /* ================= 10-LANE WHOLESALE AUCTIONS ================= */
+  /* ================= 10-LANE SOTHEBY'S AUCTIONS ================= */
   function initAuction(uid, type) {
     if(State.auctions.length>=10){toast("Sotheby's full.");return;}
     let item;
-    if(type==='plane') { let i=State.fleet.findIndex(x=>x.uid===uid); if(i===-1)return; item=State.fleet[i]; if(item.assignedPilot){ let px=State.pilots.find(x=>x.uid===item.assignedPilot); if(px)px.assignedTo=null; } State.fleet.splice(i,1); }
+    if(type==='plane') {
+      let i=State.fleet.findIndex(x=>x.uid===uid); if(i===-1)return;
+      item=State.fleet[i];
+      ensurePaintingImage(item);
+      if(item.assignedPilot){ let px=State.pilots.find(x=>x.uid===item.assignedPilot); if(px)px.assignedTo=null; }
+      State.fleet.splice(i,1);
+    }
     if(type==='pilot') { let i=State.pilots.findIndex(x=>x.uid===uid); if(i===-1)return; item=State.pilots[i]; State.pilots.splice(i,1); }
     
     State.auctions.push({ item:item, type:type, baseVal:item.value, timer:20.0, currentBid:Math.floor(item.value*0.9), log:[] });
@@ -1492,7 +2263,10 @@
     
     let loaded = 0;
     c.slice(0,a).forEach(item=>{ 
-      if(type==='planes'){ let i=State.fleet.findIndex(x=>x.uid===item.uid); State.fleet.splice(i,1); }
+      if(type==='planes'){
+        ensurePaintingImage(item);
+        let i=State.fleet.findIndex(x=>x.uid===item.uid); State.fleet.splice(i,1);
+      }
       if(type==='pilots'){ let i=State.pilots.findIndex(x=>x.uid===item.uid); State.pilots.splice(i,1); }
       State.auctions.push({item:item, type:type, baseVal:item.value, timer:20.0, currentBid:Math.floor(item.value*0.9), log:[]}); 
       loaded++;
@@ -1505,6 +2279,7 @@
   function renderAuctions() {
     const b=$('auction-board'); if(!b)return; $('auction-count').innerText=State.auctions.length; b.innerHTML='';$('auction-idle').style.display = State.auctions.length===0 ? 'block' : 'none';
     State.auctions.forEach((a) => {
+      if (a.type === 'plane') ensurePaintingImage(a.item);
       let hLog = a.log.map(l=>`<div>${l}</div>`).join('');
       let col = a.item.tierColor || '#fff';
       
@@ -1512,7 +2287,7 @@
         <div class="auction-slot">
           <div style="display:flex; justify-content:space-between; align-items:flex-end;">
             <div style="display:flex; gap:8px; align-items:center;">
-              ${a.type === 'plane' ? `<img src="${a.item.imgData}" style="width:40px; height:40px; image-rendering:pixelated; background:#000; border:1px solid #111;" />` : ''}
+              ${a.type === 'plane' ? `<img src="${a.item.imgData}" onclick="inspectPainting('${a.item.uid}', 'auction')" style="width:54px; height:54px; image-rendering:auto; background:#000; border:1px solid #111; cursor:zoom-in;" />` : ''}
               <div>
                 <div style="font-size:12px;font-weight:bold;color:${col};">${a.item.name}</div>
                 <div class="stat-block" style="font-size:9px;">VAL: $${fmt(a.baseVal)}</div>
@@ -1536,12 +2311,10 @@
     let n = Date.now();
     let auctionChanged = false;
     
-    // Market Timer
     State.marketTimer -= 0.1;
     let mT = $('market-timer'); if(mT) mT.innerText = Math.max(0, State.marketTimer).toFixed(1);
     if(State.marketTimer <= 0) { State.marketTimer = 10.0; refreshMarket(); }
 
-    // Exhibitions
     State.fleet.forEach(p => {
       if(p.status==='IN_FLIGHT') {
         let pct = ((n-p.flightStart)/p.flightDuration)*100;
@@ -1565,7 +2338,6 @@
       needsFleetRender = false;
     }
 
-    // Auctions
     if(State.auctions.length>0) {
       for(let i=State.auctions.length-1; i>=0; i--) {
         let a=State.auctions[i]; a.timer-=0.1; 
@@ -1601,27 +2373,51 @@
   }
 
   /* ================= INIT & NAVIGATION ================= */
+  function renderAllTabs() {
+    updateHUD();
+    renderMarket();
+    renderFleet();
+    renderPilots();
+    renderRoutes();
+    renderAuctions();
+    renderGallery();
+    updateAutomationUI();
+    renderUpgrades();
+  }
+
   function setTab(tabId) {
-    document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('active'); if(b.getAttribute('onclick').includes(tabId)) b.classList.add('active'); });
+    document.querySelectorAll('.nav-btn').forEach(b => { 
+      b.classList.remove('active'); 
+      if(b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${tabId}'`)) b.classList.add('active'); 
+    });
     document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
     const target = $('tab-'+tabId); if(target) target.classList.add('active');
 
+    if(tabId==='market') renderMarket();
     if(tabId==='fleet') renderFleet();
+    if(tabId==='pilots') renderPilots();
+    if(tabId==='routes') renderRoutes();
     if(tabId==='auction') renderAuctions();
     if(tabId==='gallery') renderGallery();
+    if(tabId==='checklist') { updateAutomationUI(); renderMilestones(); renderSideMissions(); }
+    if(tabId==='upgrades') renderUpgrades();
   }
+
   function godMode() {
     State.funds += 2000000000; State.fuelReserve += 10000000;
     State.fleet.forEach(p => p.condition = 100);
-    toast("BOB's MAGIC: +$2B Cash, +10M Supplies, Studio Restored.");
+    toast("BOB'S MAGIC: +$2B Cash, +10M Supplies, Studio Restored.");
     updateHUD(); renderFleet();
   }
 
   function initUI() {
     if(!State.gallery) State.gallery = [];
     if(!State.routes || State.routes.length < 400) State.routes = generateRoutes();
-    updateHUD(); refreshMarket();
-    if(globalInterval) clearInterval(globalInterval); globalInterval = setInterval(gameTick, 100);
+    if(!State.sideMissions || State.sideMissions.length === 0) generateSideMissions();
+    refreshMarket();
+    renderAllTabs();
+    if(globalInterval) clearInterval(globalInterval);
+    globalInterval = setInterval(gameTick, 100);
   }
   initUI();
 </script>
